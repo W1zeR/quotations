@@ -20,6 +20,8 @@ services.AddEndpointsApiExplorer();
 
 services.AddSwaggerGen();
 
+services.AddAppServices();
+
 var app = builder.Build();
 
 app.UseAppSwagger();

@@ -25,6 +25,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\Context\Context.csproj" />
+    <ProjectReference Include="..\..\..\Service\Categories\Categories.csproj" />
+    <ProjectReference Include="..\..\..\Service\Comments\Comments.csproj" />
+    <ProjectReference Include="..\..\..\Service\Quotations\Quotations.csproj" />
+    <ProjectReference Include="..\..\..\Service\Subscriptions\Subscriptions.csproj" />
+    <ProjectReference Include="..\..\..\Service\Users\Users.csproj" />
   </ItemGroup>
 
 </Project>
