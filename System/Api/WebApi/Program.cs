@@ -9,27 +9,20 @@ var services = builder.Services;
 var configuration = builder.Configuration;
 
 services.AddAppDbContext(configuration);
-
 services.AddControllers();
-
 services.AddHealthChecks();
-
 services.AddHttpContextAccessor();
-
 services.AddEndpointsApiExplorer();
-
 services.AddSwaggerGen();
-
+services.AddAppAutoMapper();
+services.AddAppFluentValidation();
 services.AddAppServices();
 
 var app = builder.Build();
 
 app.UseAppSwagger();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.MapHealthChecks("/health");
 
 DbInitializer.Execute(app.Services);
