@@ -4,10 +4,10 @@ namespace Subscriptions
 {
     public interface ISubscriptionService
     {
-        Task<IEnumerable<SubscriptionModel>> GetSubscriptions();
-        Task<SubscriptionModel> GetSubscription(int id);
-        Task<SubscriptionModel> AddSubscription(AddSubscriptionModel model);
-        Task UpdateSubscription(int id, UpdateSubscriptionModel model);
-        Task DeleteSubscription(int id);
+        Task<IEnumerable<SubscriptionModel>> GetAll();
+        Task<SubscriptionModel> GetById(int id);
+        Task Insert(InsertSubscriptionModel model);
+        Task Update(UpdateSubscriptionModel model);
+        Task Delete(int id);
     }
 }

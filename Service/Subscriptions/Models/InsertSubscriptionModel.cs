@@ -1,6 +1,6 @@
 ﻿namespace Categories.Models
 {
-    public class AddQuotationModel
+    public class InsertSubscriptionModel
     {
 
     }

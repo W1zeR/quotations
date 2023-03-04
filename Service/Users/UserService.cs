@@ -4,27 +4,27 @@ namespace Users
 {
     public class UserService : IUserService
     {
-        public Task<UserModel> AddUser(AddUserModel model)
+        public async Task<IEnumerable<UserModel>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteUser(int id)
+        public async Task<UserModel> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserModel> GetUser(int id)
+        public async Task Insert(InsertUserModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<UserModel>> GetUsers()
+        public async Task Update(UpdateUserModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateUser(int id, UpdateUserModel model)
+        public async Task Delete(int id)
         {
             throw new NotImplementedException();
         }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Context.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20230214070651_Init")]
+    [Migration("20230304075932_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,40 +20,10 @@ namespace Context.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("CategoryQuotation", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuotationsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("CategoriesId", "QuotationsId");
-
-                    b.HasIndex("QuotationsId");
-
-                    b.ToTable("CategoryQuotation");
-                });
-
-            modelBuilder.Entity("CategoryUser", b =>
-                {
-                    b.Property<Guid>("FollowersId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("FollowingCategoriesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("FollowersId", "FollowingCategoriesId");
-
-                    b.HasIndex("FollowingCategoriesId");
-
-                    b.ToTable("CategoryUser");
-                });
 
             modelBuilder.Entity("Context.Entities.Category", b =>
                 {
@@ -70,6 +40,52 @@ namespace Context.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Context.Entities.CategoryQuotation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("QuotationId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("QuotationId");
+
+                    b.ToTable("CategoriesQuotations");
+                });
+
+            modelBuilder.Entity("Context.Entities.CategoryUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CategoriesUsers");
                 });
 
             modelBuilder.Entity("Context.Entities.Comment", b =>
@@ -126,15 +142,23 @@ namespace Context.Migrations
 
             modelBuilder.Entity("Context.Entities.Subscription", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("FollowerId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserId", "FollowerId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("FollowerId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Subscriptions");
                 });
@@ -334,34 +358,42 @@ namespace Context.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CategoryQuotation", b =>
+            modelBuilder.Entity("Context.Entities.CategoryQuotation", b =>
                 {
-                    b.HasOne("Context.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
+                    b.HasOne("Context.Entities.Category", "Category")
+                        .WithMany("Quotations")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Context.Entities.Quotation", null)
-                        .WithMany()
-                        .HasForeignKey("QuotationsId")
+                    b.HasOne("Context.Entities.Quotation", "Quotation")
+                        .WithMany("Categories")
+                        .HasForeignKey("QuotationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Quotation");
                 });
 
-            modelBuilder.Entity("CategoryUser", b =>
+            modelBuilder.Entity("Context.Entities.CategoryUser", b =>
                 {
-                    b.HasOne("Context.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("FollowersId")
+                    b.HasOne("Context.Entities.Category", "Category")
+                        .WithMany("Followers")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Context.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("FollowingCategoriesId")
+                    b.HasOne("Context.Entities.User", "User")
+                        .WithMany("FollowingCategories")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Context.Entities.Comment", b =>
@@ -464,8 +496,17 @@ namespace Context.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Context.Entities.Category", b =>
+                {
+                    b.Navigation("Followers");
+
+                    b.Navigation("Quotations");
+                });
+
             modelBuilder.Entity("Context.Entities.Quotation", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("Comments");
                 });
 
@@ -476,6 +517,8 @@ namespace Context.Migrations
                     b.Navigation("Followers");
 
                     b.Navigation("Following");
+
+                    b.Navigation("FollowingCategories");
 
                     b.Navigation("Quotations");
                 });

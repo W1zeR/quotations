@@ -4,27 +4,27 @@ namespace Comments
 {
     public class CommentService : ICommentService
     {
-        public Task<CommentModel> AddComment(AddCommentModel model)
+        public async Task<IEnumerable<CommentModel>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteComment(int id)
+        public async Task<CommentModel> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<CommentModel> GetComment(int id)
+        public async Task Insert(InsertCommentModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<CommentModel>> GetComments()
+        public async Task Update(UpdateCommentModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateComment(int id, UpdateCommentModel model)
+        public async Task Delete(int id)
         {
             throw new NotImplementedException();
         }

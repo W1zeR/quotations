@@ -4,10 +4,10 @@ namespace Users
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserModel>> GetUsers();
-        Task<UserModel> GetUser(int id);
-        Task<UserModel> AddUser(AddUserModel model);
-        Task UpdateUser(int id, UpdateUserModel model);
-        Task DeleteUser(int id);
+        Task<IEnumerable<UserModel>> GetAll();
+        Task<UserModel> GetById(int id);
+        Task Insert(InsertUserModel model);
+        Task Update(UpdateUserModel model);
+        Task Delete(int id);
     }
 }

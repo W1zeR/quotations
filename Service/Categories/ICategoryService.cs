@@ -4,10 +4,10 @@ namespace Categories
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryModel>> GetCategories();
-        Task<CategoryModel> GetCategory(int id);
-        Task<CategoryModel> AddCategory(AddCategoryModel model);
-        Task UpdateCategory(int id, UpdateCategoryModel model);
-        Task DeleteCategory(int id);
+        Task<IEnumerable<CategoryModel>> GetAll();
+        Task<CategoryModel> GetById(int id);
+        Task Insert(InsertCategoryModel model);
+        Task Update(UpdateCategoryModel model);
+        Task Delete(int id);
     }
 }

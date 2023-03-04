@@ -1,6 +1,6 @@
 ﻿namespace Categories.Models
 {
-    public class AddCommentModel
+    public class InsertUserModel
     {
 
     }

@@ -7,7 +7,7 @@ namespace WebApi.Configuration
     {
         public static IServiceCollection AddAppFluentValidation(this IServiceCollection services)
         {
-            services.AddValidatorsFromAssemblyContaining<AddCategoryModelValidator>();
+            services.AddValidatorsFromAssemblyContaining<InsertCategoryModelValidator>(ServiceLifetime.Singleton);
 
             return services;
         }

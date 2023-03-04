@@ -1,13 +1,13 @@
 ﻿namespace Context.Entities
 {
-    public class Subscription
+    public class CategoryUser
     {
         public int Id { get; set; }
 
+        public int CategoryId { get; set; }
+        public virtual Category Category { get; set; } = null!;
+
         public Guid UserId { get; set; }
         public virtual User User { get; set; } = null!;
-
-        public Guid FollowerId { get; set; }
-        public virtual User Follower { get; set; } = null!;
     }
 }

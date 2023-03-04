@@ -4,10 +4,10 @@ namespace Comments
 {
     public interface ICommentService
     {
-        Task<IEnumerable<CommentModel>> GetComments();
-        Task<CommentModel> GetComment(int id);
-        Task<CommentModel> AddComment(AddCommentModel model);
-        Task UpdateComment(int id, UpdateCommentModel model);
-        Task DeleteComment(int id);
+        Task<IEnumerable<CommentModel>> GetAll();
+        Task<CommentModel> GetById(int id);
+        Task Insert(InsertCommentModel model);
+        Task Update(UpdateCommentModel model);
+        Task Delete(int id);
     }
 }

@@ -4,27 +4,27 @@ namespace Subscriptions
 {
     public class SubscriptionService : ISubscriptionService
     {
-        public Task<SubscriptionModel> AddSubscription(AddSubscriptionModel model)
+        public async Task<IEnumerable<SubscriptionModel>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteSubscription(int id)
+        public async Task<SubscriptionModel> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<SubscriptionModel> GetSubscription(int id)
+        public async Task Insert(InsertSubscriptionModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<SubscriptionModel>> GetSubscriptions()
+        public async Task Update(UpdateSubscriptionModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateSubscription(int id, UpdateSubscriptionModel model)
+        public async Task Delete(int id)
         {
             throw new NotImplementedException();
         }

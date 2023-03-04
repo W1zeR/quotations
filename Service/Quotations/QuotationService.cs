@@ -4,27 +4,27 @@ namespace Quotations
 {
     public class QuotationService : IQuotationService
     {
-        public Task<QuotationModel> AddQuotation(AddQuotationModel model)
+        public async Task<IEnumerable<QuotationModel>> GetAll(int offset = 0, int limit = 10)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteQuotation(int id)
+        public async Task<QuotationModel> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<QuotationModel> GetQuotation(int id)
+        public async Task Insert(InsertQuotationModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<QuotationModel>> GetQuotations(int offset = 0, int limit = 10)
+        public async Task Update(UpdateQuotationModel model)
         {
             throw new NotImplementedException();
         }
 
-        public Task UpdateQuotation(int id, UpdateQuotationModel model)
+        public async Task Delete(int id)
         {
             throw new NotImplementedException();
         }

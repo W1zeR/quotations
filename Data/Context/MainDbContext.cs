@@ -8,6 +8,8 @@ namespace Context
     public class MainDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryQuotation> CategoriesQuotations { get; set; }
+        public DbSet<CategoryUser> CategoriesUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Quotation> Quotations { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
@@ -17,9 +19,6 @@ namespace Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Subscription>()
-                .HasKey(s => new { s.UserId, s.FollowerId });
 
             modelBuilder.Entity<Subscription>()
                 .HasOne(s => s.User)

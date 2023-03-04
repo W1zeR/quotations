@@ -2,9 +2,9 @@
 
 namespace Categories.Models.FluentValidation
 {
-    public class AddCategoryModelValidator : AbstractValidator<AddCategoryModel>
+    public class InsertCategoryModelValidator : AbstractValidator<InsertCategoryModel>
     {
-        public AddCategoryModelValidator() 
+        public InsertCategoryModelValidator() 
         {
             RuleFor(x => x.Name)
                 .NotEmpty()

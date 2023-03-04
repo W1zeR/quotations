@@ -194,12 +194,14 @@ namespace Context.Migrations
                 name: "Subscriptions",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     FollowerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscriptions", x => new { x.UserId, x.FollowerId });
+                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Subscriptions_AspNetUsers_FollowerId",
                         column: x => x.FollowerId,
@@ -215,48 +217,52 @@ namespace Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryUser",
+                name: "CategoriesUsers",
                 columns: table => new
                 {
-                    FollowersId = table.Column<Guid>(type: "uuid", nullable: false),
-                    FollowingCategoriesId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryUser", x => new { x.FollowersId, x.FollowingCategoriesId });
+                    table.PrimaryKey("PK_CategoriesUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryUser_AspNetUsers_FollowersId",
-                        column: x => x.FollowersId,
+                        name: "FK_CategoriesUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryUser_Categories_FollowingCategoriesId",
-                        column: x => x.FollowingCategoriesId,
+                        name: "FK_CategoriesUsers_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryQuotation",
+                name: "CategoriesQuotations",
                 columns: table => new
                 {
-                    CategoriesId = table.Column<int>(type: "integer", nullable: false),
-                    QuotationsId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    QuotationId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryQuotation", x => new { x.CategoriesId, x.QuotationsId });
+                    table.PrimaryKey("PK_CategoriesQuotations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryQuotation_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
+                        name: "FK_CategoriesQuotations_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryQuotation_Quotations_QuotationsId",
-                        column: x => x.QuotationsId,
+                        name: "FK_CategoriesQuotations_Quotations_QuotationId",
+                        column: x => x.QuotationId,
                         principalTable: "Quotations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -328,14 +334,24 @@ namespace Context.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryQuotation_QuotationsId",
-                table: "CategoryQuotation",
-                column: "QuotationsId");
+                name: "IX_CategoriesQuotations_CategoryId",
+                table: "CategoriesQuotations",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryUser_FollowingCategoriesId",
-                table: "CategoryUser",
-                column: "FollowingCategoriesId");
+                name: "IX_CategoriesQuotations_QuotationId",
+                table: "CategoriesQuotations",
+                column: "QuotationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoriesUsers_CategoryId",
+                table: "CategoriesUsers",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoriesUsers_UserId",
+                table: "CategoriesUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_QuotationId",
@@ -356,6 +372,11 @@ namespace Context.Migrations
                 name: "IX_Subscriptions_FollowerId",
                 table: "Subscriptions",
                 column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_UserId",
+                table: "Subscriptions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -377,10 +398,10 @@ namespace Context.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CategoryQuotation");
+                name: "CategoriesQuotations");
 
             migrationBuilder.DropTable(
-                name: "CategoryUser");
+                name: "CategoriesUsers");
 
             migrationBuilder.DropTable(
                 name: "Comments");
