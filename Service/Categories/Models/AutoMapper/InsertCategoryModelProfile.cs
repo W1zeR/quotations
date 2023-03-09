@@ -3,7 +3,7 @@ using Context.Entities;
 
 namespace Categories.Models.AutoMapper
 {
-    public class InsertCategoryModelProfile: Profile
+    public class InsertCategoryModelProfile : Profile
     {
         public InsertCategoryModelProfile()
         {

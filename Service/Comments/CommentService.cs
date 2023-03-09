@@ -1,32 +1,94 @@
-﻿using Categories.Models;
+﻿using AutoMapper;
+using Comments.Models;
+using Common.Exceptions;
+using Context;
+using Context.Entities;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Comments
 {
     public class CommentService : ICommentService
     {
-        public async Task<IEnumerable<CommentModel>> GetAll()
+        private readonly IDbContextFactory<MainDbContext> contextFactory;
+        private readonly IMapper mapper;
+        private readonly IValidator<InsertCommentModel> insertCommentModelValidator;
+        private readonly IValidator<UpdateCommentModel> updateCommentModelValidator;
+
+        public CommentService(
+            IDbContextFactory<MainDbContext> contextFactory,
+            IMapper mapper,
+            IValidator<InsertCommentModel> insertCommentModelValidator,
+            IValidator<UpdateCommentModel> updateCommentModelValidator
+        )
         {
-            throw new NotImplementedException();
+            this.contextFactory = contextFactory;
+            this.mapper = mapper;
+            this.insertCommentModelValidator = insertCommentModelValidator;
+            this.updateCommentModelValidator = updateCommentModelValidator;
         }
 
         public async Task<CommentModel> GetById(int id)
         {
-            throw new NotImplementedException();
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comment = await context.Comments.FindAsync(id);
+            return comment == null ? throw new ServiceException($"Comment with id {id} wasn't found") :
+                mapper.Map<CommentModel>(comment);
+        }
+
+        public async Task<IEnumerable<CommentModel>> GetByQuotationId(int quotationId)
+        {
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comments = context.Comments
+                .Where(c => c.QuotationId.Equals(quotationId));
+            return (await comments.ToListAsync())
+                .Select(mapper.Map<CommentModel>);
+        }
+
+        public async Task<IEnumerable<CommentModel>> GetByUserId(Guid userId)
+        {
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comments = context.Comments
+                .Where(c => c.UserId.Equals(userId));
+            return (await comments.ToListAsync())
+                .Select(mapper.Map<CommentModel>);
         }
 
         public async Task Insert(InsertCommentModel model)
         {
-            throw new NotImplementedException();
+            var validationResult = insertCommentModelValidator.Validate(model);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comment = mapper.Map<Comment>(model);
+            await context.Comments.AddAsync(comment);
+            await context.SaveChangesAsync();
         }
 
         public async Task Update(UpdateCommentModel model)
         {
-            throw new NotImplementedException();
+            var validationResult = updateCommentModelValidator.Validate(model);
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comment = await context.Comments.FindAsync(model.Id)
+                ?? throw new ServiceException($"Comment with id {model.Id} wasn't found");
+            comment = mapper.Map<Comment>(model);
+            context.Comments.Update(comment);
+            await context.SaveChangesAsync();
         }
 
         public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comment = await context.Comments.FindAsync(id)
+                ?? throw new ServiceException($"Comment with id {id} wasn't found");
+            context.Comments.Remove(comment);
+            await context.SaveChangesAsync();
         }
     }
 }

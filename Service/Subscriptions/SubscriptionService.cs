@@ -1,32 +1,63 @@
-﻿using Categories.Models;
+﻿using AutoMapper;
+using Common.Exceptions;
+using Context;
+using Context.Entities;
+using Microsoft.EntityFrameworkCore;
+using Subscriptions.Models;
+using Users.Models;
 
 namespace Subscriptions
 {
     public class SubscriptionService : ISubscriptionService
     {
-        public async Task<IEnumerable<SubscriptionModel>> GetAll()
+        private readonly IDbContextFactory<MainDbContext> contextFactory;
+        private readonly IMapper mapper;
+
+        public SubscriptionService(
+            IDbContextFactory<MainDbContext> contextFactory,
+            IMapper mapper
+        )
         {
-            throw new NotImplementedException();
+            this.contextFactory = contextFactory;
+            this.mapper = mapper;
         }
 
-        public async Task<SubscriptionModel> GetById(int id)
+        public async Task<IEnumerable<UserModel>> GetFollowersByUserId(Guid userId)
         {
-            throw new NotImplementedException();
+            using var context = await contextFactory.CreateDbContextAsync();
+            var users = context.Subscriptions
+                .Where(s => s.UserId.Equals(userId))
+                .Join(context.Users, s => s.FollowerId, u => u.Id, (s, u) => u);
+            return (await users.ToListAsync())
+                .Select(mapper.Map<UserModel>);
         }
 
-        public async Task Insert(InsertSubscriptionModel model)
+        public async Task<IEnumerable<UserModel>> GetUsersByFollowerId(Guid followerId)
         {
-            throw new NotImplementedException();
+            using var context = await contextFactory.CreateDbContextAsync();
+            var users = context.Subscriptions
+                .Where(s => s.FollowerId.Equals(followerId))
+                .Join(context.Users, s => s.UserId, u => u.Id, (s, u) => u);
+            return (await users.ToListAsync())
+                .Select(mapper.Map<UserModel>);
         }
 
-        public async Task Update(UpdateSubscriptionModel model)
+        public async Task Insert(SubscriptionModel model)
         {
-            throw new NotImplementedException();
+            using var context = await contextFactory.CreateDbContextAsync();
+            var subscription = mapper.Map<Subscription>(model);
+            await context.Subscriptions.AddAsync(subscription);
+            await context.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(SubscriptionModel model)
         {
-            throw new NotImplementedException();
+            using var context = await contextFactory.CreateDbContextAsync();
+            var subscription = await context.Subscriptions.FindAsync(model.UserId, model.FollowerId)
+                ?? throw new ServiceException($"Subscription with UserId {model.UserId} " +
+                $"and FollowerId {model.FollowerId} wasn't found");
+            context.Subscriptions.Remove(subscription);
+            await context.SaveChangesAsync();
         }
     }
 }

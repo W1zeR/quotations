@@ -13,6 +13,7 @@ namespace Context.Factories
                 .Build();
 
             DbContextOptions<MainDbContext> options = new DbContextOptionsBuilder<MainDbContext>()
+                .UseLazyLoadingProxies()
                 .UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
                 .Options;
 

@@ -24,11 +24,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Controllers\CategoriesQuotations\Models\" />
+    <Folder Include="Controllers\CategoriesUsers\Models\" />
+    <Folder Include="Controllers\Categories\Models\" />
+    <Folder Include="Controllers\Comments\Models\" />
+    <Folder Include="Controllers\Quotations\Models\" />
+    <Folder Include="Controllers\Subscriptions\Models\" />
+    <Folder Include="Controllers\Users\Models\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Data\Context\Context.csproj" />
+    <ProjectReference Include="..\..\..\Service\CategoriesQuotations\CategoriesQuotations.csproj" />
+    <ProjectReference Include="..\..\..\Service\CategoriesUsers\CategoriesUsers.csproj" />
     <ProjectReference Include="..\..\..\Service\Categories\Categories.csproj" />
     <ProjectReference Include="..\..\..\Service\Comments\Comments.csproj" />
     <ProjectReference Include="..\..\..\Service\Quotations\Quotations.csproj" />

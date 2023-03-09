@@ -4,7 +4,7 @@ namespace Categories
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryModel>> GetAll();
+        Task<IEnumerable<CategoryModel>> GetAll(int offset = 0, int limit = 10);
         Task<CategoryModel> GetById(int id);
         Task Insert(InsertCategoryModel model);
         Task Update(UpdateCategoryModel model);

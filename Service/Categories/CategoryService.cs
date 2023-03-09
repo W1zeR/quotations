@@ -28,22 +28,21 @@ namespace Categories
             this.updateCategoryModelValidator = updateCategoryModelValidator;
         }
 
-        public async Task<IEnumerable<CategoryModel>> GetAll()
+        public async Task<IEnumerable<CategoryModel>> GetAll(int offset = 0, int limit = 10)
         {
             using var context = await contextFactory.CreateDbContextAsync();
-            var categories = await context.Categories.ToListAsync();
-            return categories.Select(mapper.Map<CategoryModel>);
+            return context.Categories
+                .Skip(Math.Max(offset, 0))
+                .Take(Math.Max(0, Math.Min(limit, 1000)))
+                .Select(mapper.Map<CategoryModel>);
         }
 
         public async Task<CategoryModel> GetById(int id)
         {
             using var context = await contextFactory.CreateDbContextAsync();
-            var category = await context.Categories.FirstOrDefaultAsync(x => x.Id.Equals(id));
-            if (category == null)
-            {
-                throw new ServiceException($"Category with id {id} wasn't found");
-            }
-            return mapper.Map<CategoryModel>(category);
+            var category = await context.Categories.FindAsync(id);
+            return category == null ? throw new ServiceException($"Category with id {id} wasn't found") :
+                mapper.Map<CategoryModel>(category);
         }
 
         public async Task Insert(InsertCategoryModel model)
@@ -67,11 +66,8 @@ namespace Categories
                 throw new ValidationException(validationResult.Errors);
             }
             using var context = await contextFactory.CreateDbContextAsync();
-            var category = await context.Categories.FirstOrDefaultAsync(x => x.Id.Equals(model.Id));
-            if (category == null)
-            {
-                throw new ServiceException($"Category with id {model.Id} wasn't found");
-            }
+            var category = await context.Categories.FindAsync(model.Id)
+                ?? throw new ServiceException($"Category with id {model.Id} wasn't found");
             category = mapper.Map<Category>(model);
             context.Categories.Update(category);
             await context.SaveChangesAsync();
@@ -80,11 +76,8 @@ namespace Categories
         public async Task Delete(int id)
         {
             using var context = await contextFactory.CreateDbContextAsync();
-            var category = await context.Categories.FirstOrDefaultAsync(x => x.Id.Equals(id));
-            if (category == null)
-            {
-                throw new ServiceException($"Category with id {id} wasn't found");
-            }
+            var category = await context.Categories.FindAsync(id)
+                ?? throw new ServiceException($"Category with id {id} wasn't found");
             context.Categories.Remove(category);
             await context.SaveChangesAsync();
         }

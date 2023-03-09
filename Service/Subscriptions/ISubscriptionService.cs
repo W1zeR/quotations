@@ -1,13 +1,13 @@
-﻿using Categories.Models;
+﻿using Subscriptions.Models;
+using Users.Models;
 
 namespace Subscriptions
 {
     public interface ISubscriptionService
     {
-        Task<IEnumerable<SubscriptionModel>> GetAll();
-        Task<SubscriptionModel> GetById(int id);
-        Task Insert(InsertSubscriptionModel model);
-        Task Update(UpdateSubscriptionModel model);
-        Task Delete(int id);
+        Task<IEnumerable<UserModel>> GetFollowersByUserId(Guid userId);
+        Task<IEnumerable<UserModel>> GetUsersByFollowerId(Guid followerId);
+        Task Insert(SubscriptionModel model);
+        Task Delete(SubscriptionModel model);
     }
 }

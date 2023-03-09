@@ -20,6 +20,15 @@ namespace Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<CategoryQuotation>()
+                .HasKey(c => new { c.CategoryId, c.QuotationId });
+
+            modelBuilder.Entity<CategoryUser>()
+                .HasKey(c => new { c.CategoryId, c.UserId });
+
+            modelBuilder.Entity<Subscription>()
+                .HasKey(s => new { s.UserId, s.FollowerId });
+
             modelBuilder.Entity<Subscription>()
                 .HasOne(s => s.User)
                 .WithMany(u => u.Followers)

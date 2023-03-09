@@ -1,4 +1,6 @@
 ﻿using Categories;
+using CategoriesQuotations;
+using CategoriesUsers;
 using Comments;
 using Quotations;
 using Subscriptions;
@@ -12,6 +14,8 @@ namespace WebApi.Configuration
         {
             services
                 .AddCategoryService()
+                .AddCategoryQuotationService()
+                .AddCategoryUserService()
                 .AddCommentService()
                 .AddQuotationService()
                 .AddSubscriptionService()
