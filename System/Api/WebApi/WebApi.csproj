@@ -24,13 +24,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\CategoriesQuotations\Models\" />
-    <Folder Include="Controllers\CategoriesUsers\Models\" />
-    <Folder Include="Controllers\Categories\Models\" />
-    <Folder Include="Controllers\Comments\Models\" />
-    <Folder Include="Controllers\Quotations\Models\" />
-    <Folder Include="Controllers\Subscriptions\Models\" />
-    <Folder Include="Controllers\Users\Models\" />
+    <Folder Include="Controllers\CategoriesQuotations\Models\AutoMapper\" />
+    <Folder Include="Controllers\CategoriesUsers\Models\AutoMapper\" />
+    <Folder Include="Controllers\Comments\Models\AutoMapper\" />
+    <Folder Include="Controllers\Comments\Models\FluentValidation\" />
+    <Folder Include="Controllers\Quotations\Models\AutoMapper\" />
+    <Folder Include="Controllers\Quotations\Models\FluentValidation\" />
+    <Folder Include="Controllers\Subscriptions\Models\AutoMapper\" />
+    <Folder Include="Controllers\Subscriptions\Models\FluentValidation\" />
+    <Folder Include="Controllers\Users\Models\AutoMapper\" />
+    <Folder Include="Controllers\Users\Models\FluentValidation\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
 

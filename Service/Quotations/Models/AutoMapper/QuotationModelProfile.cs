@@ -7,7 +7,8 @@ namespace Quotations.Models.AutoMapper
     {
         public QuotationModelProfile()
         {
-            CreateMap<Quotation, QuotationModel>();
+            CreateMap<Quotation, QuotationModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Comments
         Task<IEnumerable<CommentModel>> GetByQuotationId(int quotationId);
         Task<IEnumerable<CommentModel>> GetByUserId(Guid userId);
         Task Insert(InsertCommentModel model);
-        Task Update(UpdateCommentModel model);
+        Task Update(int id, UpdateCommentModel model);
         Task Delete(int id);
     }
 }

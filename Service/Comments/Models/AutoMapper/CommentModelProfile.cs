@@ -7,7 +7,8 @@ namespace Comments.Models.AutoMapper
     {
         public CommentModelProfile()
         {
-            CreateMap<Comment, CommentModel>();
+            CreateMap<Comment, CommentModel>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
         }
     }
 }

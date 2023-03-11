@@ -8,7 +8,7 @@ namespace Quotations
         Task<QuotationModel> GetById(int id);
         Task<IEnumerable<QuotationModel>> GetByUserId(Guid userId);
         Task Insert(InsertQuotationModel model);
-        Task Update(UpdateQuotationModel model);
+        Task Update(int id, UpdateQuotationModel model);
         Task Delete(int id);
     }
 }

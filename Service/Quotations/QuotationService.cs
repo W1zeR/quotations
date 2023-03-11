@@ -31,9 +31,11 @@ namespace Quotations
         public async Task<IEnumerable<QuotationModel>> GetAll(int offset = 0, int limit = 10)
         {
             using var context = await contextFactory.CreateDbContextAsync();
-            return context.Quotations
+            var quotations = context.Quotations
+                .AsQueryable()
                 .Skip(Math.Max(offset, 0))
-                .Take(Math.Max(0, Math.Min(limit, 1000)))
+                .Take(Math.Max(0, Math.Min(limit, 1000)));
+            return (await quotations.ToListAsync())
                 .Select(mapper.Map<QuotationModel>);
         }
 
@@ -67,7 +69,7 @@ namespace Quotations
             await context.SaveChangesAsync();
         }
 
-        public async Task Update(UpdateQuotationModel model)
+        public async Task Update(int id, UpdateQuotationModel model)
         {
             var validationResult = updateQuotationModelValidator.Validate(model);
             if (!validationResult.IsValid)
@@ -75,9 +77,9 @@ namespace Quotations
                 throw new ValidationException(validationResult.Errors);
             }
             using var context = await contextFactory.CreateDbContextAsync();
-            var quotation = await context.Quotations.FindAsync(model.Id)
-                ?? throw new ServiceException($"Quotation with id {model.Id} wasn't found");
-            quotation = mapper.Map<Quotation>(model);
+            var quotation = await context.Quotations.FindAsync(id)
+                ?? throw new ServiceException($"Quotation with id {id} wasn't found");
+            quotation = mapper.Map(model, quotation);
             context.Quotations.Update(quotation);
             await context.SaveChangesAsync();
         }

@@ -31,9 +31,11 @@ namespace Categories
         public async Task<IEnumerable<CategoryModel>> GetAll(int offset = 0, int limit = 10)
         {
             using var context = await contextFactory.CreateDbContextAsync();
-            return context.Categories
+            var categories = context.Categories
+                .AsQueryable()
                 .Skip(Math.Max(offset, 0))
-                .Take(Math.Max(0, Math.Min(limit, 1000)))
+                .Take(Math.Max(0, Math.Min(limit, 1000)));
+            return (await categories.ToListAsync())
                 .Select(mapper.Map<CategoryModel>);
         }
 
@@ -58,7 +60,7 @@ namespace Categories
             await context.SaveChangesAsync();
         }
 
-        public async Task Update(UpdateCategoryModel model)
+        public async Task Update(int id, UpdateCategoryModel model)
         {
             var validationResult = updateCategoryModelValidator.Validate(model);
             if (!validationResult.IsValid)
@@ -66,9 +68,9 @@ namespace Categories
                 throw new ValidationException(validationResult.Errors);
             }
             using var context = await contextFactory.CreateDbContextAsync();
-            var category = await context.Categories.FindAsync(model.Id)
-                ?? throw new ServiceException($"Category with id {model.Id} wasn't found");
-            category = mapper.Map<Category>(model);
+            var category = await context.Categories.FindAsync(id)
+                ?? throw new ServiceException($"Category with id {id} wasn't found");
+            category = mapper.Map(model, category);
             context.Categories.Update(category);
             await context.SaveChangesAsync();
         }

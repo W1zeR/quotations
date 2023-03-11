@@ -1,12 +1,22 @@
-﻿namespace WebApi.Configuration
+﻿using Categories.Models.AutoMapper;
+using Comments.Models.AutoMapper;
+using Quotations.Models.AutoMapper;
+using WebApi.Controllers.Categories.Models.AutoMapper;
+
+namespace WebApi.Configuration
 {
     public static class AutoMapperConfiguration
     {
         public static IServiceCollection AddAppAutoMapper(this IServiceCollection services)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            services.AddAutoMapper(
+                // Add AutoMapper to services
+                typeof(InsertCategoryModelProfile),
+                typeof(InsertCommentModelProfile),
+                typeof(InsertQuotationModelProfile),
 
-            services.AddAutoMapper(assemblies);
+                // Add AutoMapper to controllers
+                typeof(InsertCategoryRequestProfile));
 
             return services;
         }
