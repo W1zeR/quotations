@@ -1,8 +1,7 @@
 ﻿namespace CategoriesQuotations.Models
 {
-    public class CategoryQuotationModel
+    public class CategoryQuotationModel : CategoryQuotationModelWithoutId
     {
-        public int CategoryId { get; set; }
-        public int QuotationId { get; set; }
+        public int Id { get; set; }
     }
 }

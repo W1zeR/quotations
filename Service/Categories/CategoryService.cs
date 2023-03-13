@@ -49,11 +49,7 @@ namespace Categories
 
         public async Task Insert(InsertCategoryModel model)
         {
-            var validationResult = insertCategoryModelValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            await insertCategoryModelValidator.ValidateAndThrowAsync(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var category = mapper.Map<Category>(model);
             await context.Categories.AddAsync(category);
@@ -62,11 +58,7 @@ namespace Categories
 
         public async Task Update(int id, UpdateCategoryModel model)
         {
-            var validationResult = updateCategoryModelValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            await updateCategoryModelValidator.ValidateAndThrowAsync(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var category = await context.Categories.FindAsync(id)
                 ?? throw new ServiceException($"Category with id {id} wasn't found");

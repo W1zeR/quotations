@@ -56,11 +56,7 @@ namespace Comments
 
         public async Task Insert(InsertCommentModel model)
         {
-            var validationResult = insertCommentModelValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            insertCommentModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var comment = mapper.Map<Comment>(model);
             await context.Comments.AddAsync(comment);
@@ -69,11 +65,7 @@ namespace Comments
 
         public async Task Update(int id, UpdateCommentModel model)
         {
-            var validationResult = updateCommentModelValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            updateCommentModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var comment = await context.Comments.FindAsync(id)
                 ?? throw new ServiceException($"Comment with id {id} wasn't found");

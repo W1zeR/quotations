@@ -44,30 +44,48 @@ namespace Context.Migrations
 
             modelBuilder.Entity("Context.Entities.CategoryQuotation", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<int>("QuotationId")
                         .HasColumnType("integer");
 
-                    b.HasKey("CategoryId", "QuotationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QuotationId");
+
+                    b.HasIndex("CategoryId", "QuotationId")
+                        .IsUnique();
 
                     b.ToTable("CategoriesQuotations");
                 });
 
             modelBuilder.Entity("Context.Entities.CategoryUser", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("CategoryId", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("CategoryId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("CategoriesUsers");
                 });
@@ -126,15 +144,24 @@ namespace Context.Migrations
 
             modelBuilder.Entity("Context.Entities.Subscription", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<Guid>("FollowerId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserId", "FollowerId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("FollowerId");
+
+                    b.HasIndex("UserId", "FollowerId")
+                        .IsUnique();
 
                     b.ToTable("Subscriptions");
                 });

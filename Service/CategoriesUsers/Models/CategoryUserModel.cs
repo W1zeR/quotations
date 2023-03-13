@@ -1,8 +1,7 @@
 ﻿namespace CategoriesUsers.Models
 {
-    public class CategoryUserModel
+    public class CategoryUserModel : CategoryUserModelWithoutId
     {
-        public int CategoryId { get; set; }
-        public Guid UserId { get; set; }
+        public int Id { get; set; }
     }
 }

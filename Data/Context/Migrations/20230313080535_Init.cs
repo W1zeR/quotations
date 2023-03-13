@@ -194,12 +194,14 @@ namespace Context.Migrations
                 name: "Subscriptions",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     FollowerId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subscriptions", x => new { x.UserId, x.FollowerId });
+                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Subscriptions_AspNetUsers_FollowerId",
                         column: x => x.FollowerId,
@@ -218,12 +220,14 @@ namespace Context.Migrations
                 name: "CategoriesUsers",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoriesUsers", x => new { x.CategoryId, x.UserId });
+                    table.PrimaryKey("PK_CategoriesUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CategoriesUsers_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -242,12 +246,14 @@ namespace Context.Migrations
                 name: "CategoriesQuotations",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
                     QuotationId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoriesQuotations", x => new { x.CategoryId, x.QuotationId });
+                    table.PrimaryKey("PK_CategoriesQuotations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CategoriesQuotations_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -328,9 +334,21 @@ namespace Context.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CategoriesQuotations_CategoryId_QuotationId",
+                table: "CategoriesQuotations",
+                columns: new[] { "CategoryId", "QuotationId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CategoriesQuotations_QuotationId",
                 table: "CategoriesQuotations",
                 column: "QuotationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoriesUsers_CategoryId_UserId",
+                table: "CategoriesUsers",
+                columns: new[] { "CategoryId", "UserId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoriesUsers_UserId",
@@ -356,6 +374,12 @@ namespace Context.Migrations
                 name: "IX_Subscriptions_FollowerId",
                 table: "Subscriptions",
                 column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_UserId_FollowerId",
+                table: "Subscriptions",
+                columns: new[] { "UserId", "FollowerId" },
+                unique: true);
         }
 
         /// <inheritdoc />

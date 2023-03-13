@@ -1,8 +1,6 @@
 ﻿namespace Quotations.Models
 {
-    public class InsertQuotationModel
+    public class InsertQuotationModel : QuotationModelWithoutId
     {
-        public string Content { get; set; } = null!;
-        public Guid UserId { get; set; }
     }
 }

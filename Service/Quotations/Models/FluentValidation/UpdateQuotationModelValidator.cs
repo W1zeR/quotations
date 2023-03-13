@@ -1,16 +1,7 @@
-﻿using FluentValidation;
-
-namespace Quotations.Models.FluentValidation
+﻿namespace Quotations.Models.FluentValidation
 {
-    public class UpdateQuotationModelValidator : AbstractValidator<UpdateQuotationModel>
+    public class UpdateQuotationModelValidator : GenericQuotationModelValidator<UpdateQuotationModel>
     {
-        public UpdateQuotationModelValidator()
-        {
-            RuleFor(x => x.Content)
-                .NotEmpty()
-                .WithMessage("Quotation content is required")
-                .MaximumLength(300)
-                .WithMessage("Quotation content is too long");
-        }
+        public UpdateQuotationModelValidator() : base() { }
     }
 }

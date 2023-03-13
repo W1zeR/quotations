@@ -1,8 +1,7 @@
 ﻿namespace Subscriptions.Models
 {
-    public class SubscriptionModel
+    public class SubscriptionModel : SubscriptionModelWithoutId
     {
-        public Guid UserId { get; set; }
-        public Guid FollowerId { get; set; }
+        public int Id { get; set; }
     }
 }

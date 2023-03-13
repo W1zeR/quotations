@@ -58,11 +58,7 @@ namespace Quotations
 
         public async Task Insert(InsertQuotationModel model)
         {
-            var validationResult = insertQuotationModelValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            insertQuotationModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var quotation = mapper.Map<Quotation>(model);
             await context.Quotations.AddAsync(quotation);
@@ -71,11 +67,7 @@ namespace Quotations
 
         public async Task Update(int id, UpdateQuotationModel model)
         {
-            var validationResult = updateQuotationModelValidator.Validate(model);
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
+            updateQuotationModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var quotation = await context.Quotations.FindAsync(id)
                 ?? throw new ServiceException($"Quotation with id {id} wasn't found");

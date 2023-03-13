@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\CategoriesQuotations\Models\AutoMapper\" />
     <Folder Include="Controllers\CategoriesUsers\Models\AutoMapper\" />
     <Folder Include="Controllers\Comments\Models\AutoMapper\" />
     <Folder Include="Controllers\Comments\Models\FluentValidation\" />

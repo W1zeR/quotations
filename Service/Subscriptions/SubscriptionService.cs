@@ -22,6 +22,26 @@ namespace Subscriptions
             this.mapper = mapper;
         }
 
+        public async Task<IEnumerable<SubscriptionModel>> GetAll(int offset = 0, int limit = 10)
+        {
+            using var context = await contextFactory.CreateDbContextAsync();
+            var subscriptions = context.Subscriptions
+                .AsQueryable()
+                .Skip(Math.Max(offset, 0))
+                .Take(Math.Max(0, Math.Min(limit, 1000)));
+            return (await subscriptions.ToListAsync())
+                .Select(mapper.Map<SubscriptionModel>);
+        }
+
+        public async Task<SubscriptionModel> GetById(int id)
+        {
+            using var context = await contextFactory.CreateDbContextAsync();
+            var subscription = await context.Subscriptions.FindAsync(id);
+            return subscription == null ?
+                throw new ServiceException($"Subscription with id {id} wasn't found") :
+                mapper.Map<SubscriptionModel>(subscription);
+        }
+
         public async Task<IEnumerable<UserModel>> GetFollowersByUserId(Guid userId)
         {
             using var context = await contextFactory.CreateDbContextAsync();
@@ -42,7 +62,7 @@ namespace Subscriptions
                 .Select(mapper.Map<UserModel>);
         }
 
-        public async Task Insert(SubscriptionModel model)
+        public async Task Insert(InsertSubscriptionModel model)
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var subscription = mapper.Map<Subscription>(model);
@@ -50,12 +70,21 @@ namespace Subscriptions
             await context.SaveChangesAsync();
         }
 
-        public async Task Delete(SubscriptionModel model)
+        public async Task Update(int id, UpdateSubscriptionModel model)
         {
             using var context = await contextFactory.CreateDbContextAsync();
-            var subscription = await context.Subscriptions.FindAsync(model.UserId, model.FollowerId)
-                ?? throw new ServiceException($"Subscription with UserId {model.UserId} " +
-                $"and FollowerId {model.FollowerId} wasn't found");
+            var subscription = await context.Subscriptions.FindAsync(id)
+                ?? throw new ServiceException($"Subscription with id {id} wasn't found");
+            subscription = mapper.Map(model, subscription);
+            context.Subscriptions.Update(subscription);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            using var context = await contextFactory.CreateDbContextAsync();
+            var subscription = await context.Subscriptions.FindAsync(id)
+                ?? throw new ServiceException($"Subscription with id {id} wasn't found");
             context.Subscriptions.Remove(subscription);
             await context.SaveChangesAsync();
         }

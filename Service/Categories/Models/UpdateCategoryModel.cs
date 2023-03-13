@@ -1,7 +1,6 @@
 ﻿namespace Categories.Models
 {
-    public class UpdateCategoryModel
+    public class UpdateCategoryModel : CategoryModelWithoutId
     {
-        public string Name { get; set; } = null!;
     }
 }

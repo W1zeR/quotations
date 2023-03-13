@@ -6,9 +6,12 @@ namespace CategoriesUsers
 {
     public interface ICategoryUserService
     {
+        Task<IEnumerable<CategoryUserModel>> GetAll(int offset = 0, int limit = 10);
+        Task<CategoryUserModel> GetById(int id);
         Task<IEnumerable<CategoryModel>> GetCategoriesByUserId(Guid userId);
         Task<IEnumerable<UserModel>> GetUsersByCategoryId(int categoryId);
-        Task Insert(CategoryUserModel model);
-        Task Delete(CategoryUserModel model);
+        Task Insert(InsertCategoryUserModel model);
+        Task Update(int id, UpdateCategoryUserModel model);
+        Task Delete(int id);
     }
 }

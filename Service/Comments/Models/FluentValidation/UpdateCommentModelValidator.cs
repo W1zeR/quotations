@@ -1,16 +1,7 @@
-﻿using FluentValidation;
-
-namespace Comments.Models.FluentValidation
+﻿namespace Comments.Models.FluentValidation
 {
-    public class UpdateCommentModelValidator : AbstractValidator<UpdateCommentModel>
+    public class UpdateCommentModelValidator : GenericCommentModelValidator<UpdateCommentModel>
     {
-        public UpdateCommentModelValidator()
-        {
-            RuleFor(x => x.Content)
-                .NotEmpty()
-                .WithMessage("Comment content is required")
-                .MaximumLength(500)
-                .WithMessage("Comment content is too long");
-        }
+        public UpdateCommentModelValidator() : base() { }
     }
 }

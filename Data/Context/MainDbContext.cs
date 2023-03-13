@@ -21,13 +21,13 @@ namespace Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<CategoryQuotation>()
-                .HasKey(c => new { c.CategoryId, c.QuotationId });
+                .HasIndex(cq => new { cq.CategoryId, cq.QuotationId }).IsUnique();
 
             modelBuilder.Entity<CategoryUser>()
-                .HasKey(c => new { c.CategoryId, c.UserId });
+                .HasIndex(cu => new { cu.CategoryId, cu.UserId }).IsUnique();
 
             modelBuilder.Entity<Subscription>()
-                .HasKey(s => new { s.UserId, s.FollowerId });
+                .HasIndex(s => new { s.UserId, s.FollowerId }).IsUnique();
 
             modelBuilder.Entity<Subscription>()
                 .HasOne(s => s.User)

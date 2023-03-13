@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Categories;
 using Categories.Models;
+using CategoriesQuotations;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Categories.Models;
@@ -13,34 +14,37 @@ namespace WebApi.Controllers.Categories
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoryService categoryService;
+        private readonly ICategoryQuotationService categoryQuotationService;
         private readonly IMapper mapper;
         private readonly IValidator<InsertCategoryRequest> insertCategoryRequestValidator;
         private readonly IValidator<UpdateCategoryRequest> updateCategoryRequestValidator;
 
         public CategoriesController(
             ICategoryService categoryService,
+            ICategoryQuotationService categoryQuotationService,
             IMapper mapper,
             IValidator<InsertCategoryRequest> insertCategoryRequestValidator,
             IValidator<UpdateCategoryRequest> updateCategoryRequestValidator
         )
         {
             this.categoryService = categoryService;
+            this.categoryQuotationService = categoryQuotationService;
             this.mapper = mapper;
             this.insertCategoryRequestValidator = insertCategoryRequestValidator;
             this.updateCategoryRequestValidator = updateCategoryRequestValidator;
 
         }
 
-        [ProducesResponseType(typeof(IEnumerable<CategoryResponse>), 200)]
         [HttpGet("")]
+        [ProducesResponseType(typeof(IEnumerable<CategoryResponse>), 200)]
         public async Task<IEnumerable<CategoryResponse>> GetAll([FromQuery] int offset = 0, [FromQuery] int limit = 10)
         {
             var categories = await categoryService.GetAll(offset, limit);
             return mapper.Map<IEnumerable<CategoryResponse>>(categories);
         }
 
-        [ProducesResponseType(typeof(CategoryResponse), 200)]
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CategoryResponse), 200)]
         public async Task<CategoryResponse> GetById([FromRoute] int id)
         {
             var category = await categoryService.GetById(id);
@@ -84,5 +88,13 @@ namespace WebApi.Controllers.Categories
             await categoryService.Delete(id);
             return Ok();
         }
+
+        //[HttpGet("{id}/quotations")]
+        //[ProducesResponseType(typeof(IEnumerable<QuotationResponse>), 200)]
+        //public async Task<IEnumerable<QuotationResponse>> GetQuotationsByCategoryId(int id)
+        //{
+        //    var quotations = await categoryQuotationService.GetQuotationsByCategoryId(id);
+        //    return mapper.Map<IEnumerable<QuotationResponse>>(quotations);
+        //}
     }
 }
