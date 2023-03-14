@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Controllers.Subscriptions.Models
 {
-    public class SubscriptionRequest
+    public class SubscriptionMessageWithoutId
     {
         public Guid UserId { get; set; }
         public Guid FollowerId { get; set; }

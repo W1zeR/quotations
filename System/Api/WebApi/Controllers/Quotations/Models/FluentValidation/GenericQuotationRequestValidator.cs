@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Quotations.Models.FluentValidation
+namespace WebApi.Controllers.Quotations.Models.FluentValidation
 {
-    public class GenericQuotationModelValidator<T> : AbstractValidator<T> where T : QuotationModelWithoutId
+    public class GenericQuotationRequestValidator<T> : AbstractValidator<T> where T : QuotationMessageWithoutId
     {
-        public GenericQuotationModelValidator() 
+        public GenericQuotationRequestValidator() 
         {
             RuleFor(x => x.Content)
                 .NotEmpty()

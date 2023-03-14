@@ -3,7 +3,6 @@ using Comments.Models;
 using Common.Exceptions;
 using Context;
 using Context.Entities;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace Comments
@@ -12,20 +11,14 @@ namespace Comments
     {
         private readonly IDbContextFactory<MainDbContext> contextFactory;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertCommentModel> insertCommentModelValidator;
-        private readonly IValidator<UpdateCommentModel> updateCommentModelValidator;
 
         public CommentService(
             IDbContextFactory<MainDbContext> contextFactory,
-            IMapper mapper,
-            IValidator<InsertCommentModel> insertCommentModelValidator,
-            IValidator<UpdateCommentModel> updateCommentModelValidator
+            IMapper mapper
         )
         {
             this.contextFactory = contextFactory;
             this.mapper = mapper;
-            this.insertCommentModelValidator = insertCommentModelValidator;
-            this.updateCommentModelValidator = updateCommentModelValidator;
         }
 
         public async Task<CommentModel> GetById(int id)
@@ -56,7 +49,6 @@ namespace Comments
 
         public async Task Insert(InsertCommentModel model)
         {
-            insertCommentModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var comment = mapper.Map<Comment>(model);
             await context.Comments.AddAsync(comment);
@@ -65,7 +57,6 @@ namespace Comments
 
         public async Task Update(int id, UpdateCommentModel model)
         {
-            updateCommentModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var comment = await context.Comments.FindAsync(id)
                 ?? throw new ServiceException($"Comment with id {id} wasn't found");

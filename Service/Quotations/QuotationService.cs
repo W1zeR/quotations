@@ -2,7 +2,6 @@
 using Common.Exceptions;
 using Context;
 using Context.Entities;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Quotations.Models;
 
@@ -12,20 +11,14 @@ namespace Quotations
     {
         private readonly IDbContextFactory<MainDbContext> contextFactory;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertQuotationModel> insertQuotationModelValidator;
-        private readonly IValidator<UpdateQuotationModel> updateQuotationModelValidator;
 
         public QuotationService(
             IDbContextFactory<MainDbContext> contextFactory,
-            IMapper mapper,
-            IValidator<InsertQuotationModel> insertQuotationModelValidator,
-            IValidator<UpdateQuotationModel> updateQuotationModelValidator
+            IMapper mapper
         )
         {
             this.contextFactory = contextFactory;
             this.mapper = mapper;
-            this.insertQuotationModelValidator = insertQuotationModelValidator;
-            this.updateQuotationModelValidator = updateQuotationModelValidator;
         }
 
         public async Task<IEnumerable<QuotationModel>> GetAll(int offset = 0, int limit = 10)
@@ -58,7 +51,6 @@ namespace Quotations
 
         public async Task Insert(InsertQuotationModel model)
         {
-            insertQuotationModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var quotation = mapper.Map<Quotation>(model);
             await context.Quotations.AddAsync(quotation);
@@ -67,7 +59,6 @@ namespace Quotations
 
         public async Task Update(int id, UpdateQuotationModel model)
         {
-            updateQuotationModelValidator.ValidateAndThrow(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var quotation = await context.Quotations.FindAsync(id)
                 ?? throw new ServiceException($"Quotation with id {id} wasn't found");

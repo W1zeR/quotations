@@ -1,7 +1,6 @@
 ﻿namespace WebApi.Controllers.Categories.Models
 {
-    public class InsertCategoryRequest
+    public class InsertCategoryRequest : CategoryMessageWithoutId
     {
-        public string Name { get; set; } = null!;
     }
 }

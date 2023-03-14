@@ -1,8 +1,7 @@
 ﻿namespace WebApi.Controllers.CategoriesUsers.Models
 {
-    public class CategoryUserResponse
+    public class CategoryUserResponse : CategoryUserMessageWithoutId
     {
-        public int CategoryId { get; set; }
-        public Guid UserId { get; set; }
+        public int Id { get; set; }
     }
 }

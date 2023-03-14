@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Comments.Models.FluentValidation
+namespace WebApi.Controllers.Comments.Models.FluentValidation
 {
-    public class GenericCommentModelValidator<T> : AbstractValidator<T> where T : CommentModelWithoutId
+    public class GenericCommentRequestValidator<T> : AbstractValidator<T> where T : CommentMessageWithoutId
     {
-        public GenericCommentModelValidator() 
+        public GenericCommentRequestValidator() 
         {
             RuleFor(x => x.Content)
                 .NotEmpty()
