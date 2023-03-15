@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using Categories.Models;
-using Categories;
 using CategoriesQuotations;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Controllers.Categories.Models.FluentValidation;
-using WebApi.Controllers.Categories.Models;
 using WebApi.Controllers.CategoriesQuotations.Models;
 using CategoriesQuotations.Models;
 
@@ -44,21 +40,30 @@ namespace WebApi.Controllers.CategoriesQuotations
             return mapper.Map<CategoryQuotationResponse>(categoryQuotation);
         }
 
-        //[HttpPost("")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public async Task<IActionResult> Insert([FromBody] InsertCategoryQuotationRequest request)
-        //{
-        //    var model = mapper.Map<CategoryQuotationModel>(request);
-        //    await categoryQuotationService.Insert(model);
-        //    return Ok();
-        //}
+        [HttpPost("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Insert([FromBody] InsertCategoryQuotationRequest request)
+        {
+            var model = mapper.Map<InsertCategoryQuotationModel>(request);
+            await categoryQuotationService.Insert(model);
+            return Ok();
+        }
 
-        //[HttpDelete("{id}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //public async Task<IActionResult> Delete([FromRoute] CategoryQuotationRequest request)
-        //{
-        //    await categoryQuotationService.Delete(id);
-        //    return Ok();
-        //}
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryQuotationRequest request)
+        {
+            var model = mapper.Map<UpdateCategoryQuotationModel>(request);
+            await categoryQuotationService.Update(id, model);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            await categoryQuotationService.Delete(id);
+            return Ok();
+        }
     }
 }

@@ -21,6 +21,17 @@ namespace Comments
             this.mapper = mapper;
         }
 
+        public async Task<IEnumerable<CommentModel>> GetAll(int offset = 0, int limit = 10)
+        {
+            using var context = await contextFactory.CreateDbContextAsync();
+            var comments = context.Comments
+                .AsQueryable()
+                .Skip(Math.Max(offset, 0))
+                .Take(Math.Max(0, Math.Min(limit, 1000)));
+            return (await comments.ToListAsync())
+                .Select(mapper.Map<CommentModel>);
+        }
+
         public async Task<CommentModel> GetById(int id)
         {
             using var context = await contextFactory.CreateDbContextAsync();

@@ -2,9 +2,11 @@
 using Categories;
 using Categories.Models;
 using CategoriesQuotations;
+using CategoriesUsers;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Categories.Models;
+using WebApi.Controllers.Quotations.Models;
 
 namespace WebApi.Controllers.Categories
 {
@@ -15,6 +17,7 @@ namespace WebApi.Controllers.Categories
     {
         private readonly ICategoryService categoryService;
         private readonly ICategoryQuotationService categoryQuotationService;
+        private readonly ICategoryUserService categoryUserService;
         private readonly IMapper mapper;
         private readonly IValidator<InsertCategoryRequest> insertCategoryRequestValidator;
         private readonly IValidator<UpdateCategoryRequest> updateCategoryRequestValidator;
@@ -22,6 +25,7 @@ namespace WebApi.Controllers.Categories
         public CategoriesController(
             ICategoryService categoryService,
             ICategoryQuotationService categoryQuotationService,
+            ICategoryUserService categoryUserService,
             IMapper mapper,
             IValidator<InsertCategoryRequest> insertCategoryRequestValidator,
             IValidator<UpdateCategoryRequest> updateCategoryRequestValidator
@@ -29,10 +33,10 @@ namespace WebApi.Controllers.Categories
         {
             this.categoryService = categoryService;
             this.categoryQuotationService = categoryQuotationService;
+            this.categoryUserService = categoryUserService;
             this.mapper = mapper;
             this.insertCategoryRequestValidator = insertCategoryRequestValidator;
             this.updateCategoryRequestValidator = updateCategoryRequestValidator;
-
         }
 
         [HttpGet("")]
@@ -89,12 +93,20 @@ namespace WebApi.Controllers.Categories
             return Ok();
         }
 
-        //[HttpGet("{id}/quotations")]
-        //[ProducesResponseType(typeof(IEnumerable<QuotationResponse>), 200)]
-        //public async Task<IEnumerable<QuotationResponse>> GetQuotationsByCategoryId(int id)
+        [HttpGet("{id}/quotations")]
+        [ProducesResponseType(typeof(IEnumerable<QuotationResponse>), 200)]
+        public async Task<IEnumerable<QuotationResponse>> GetQuotationsByCategoryId(int id)
+        {
+            var quotations = await categoryQuotationService.GetQuotationsByCategoryId(id);
+            return mapper.Map<IEnumerable<QuotationResponse>>(quotations);
+        }
+
+        //[HttpGet("{id}/users")]
+        //[ProducesResponseType(typeof(IEnumerable<UserResponse>), 200)]
+        //public async Task<IEnumerable<UserResponse>> GetUsersByCategoryId(int id)
         //{
-        //    var quotations = await categoryQuotationService.GetQuotationsByCategoryId(id);
-        //    return mapper.Map<IEnumerable<QuotationResponse>>(quotations);
+        //    var quotations = await categoryUserService.GetUsersByCategoryId(id);
+        //    return mapper.Map<IEnumerable<UserResponse>>(quotations);
         //}
     }
 }

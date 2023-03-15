@@ -4,6 +4,7 @@ namespace Comments
 {
     public interface ICommentService
     {
+        Task<IEnumerable<CommentModel>> GetAll(int offset = 0, int limit = 10);
         Task<CommentModel> GetById(int id);
         Task<IEnumerable<CommentModel>> GetByQuotationId(int quotationId);
         Task<IEnumerable<CommentModel>> GetByUserId(Guid userId);
