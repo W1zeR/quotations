@@ -3,7 +3,7 @@ using Categories;
 using Categories.Models;
 using CategoriesQuotations;
 using CategoriesUsers;
-using FluentValidation;
+using Common.ModelValidator;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Categories.Models;
 using WebApi.Controllers.Quotations.Models;
@@ -19,16 +19,16 @@ namespace WebApi.Controllers.Categories
         private readonly ICategoryQuotationService categoryQuotationService;
         private readonly ICategoryUserService categoryUserService;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertCategoryRequest> insertCategoryRequestValidator;
-        private readonly IValidator<UpdateCategoryRequest> updateCategoryRequestValidator;
+        private readonly IModelValidator<InsertCategoryRequest> insertCategoryRequestValidator;
+        private readonly IModelValidator<UpdateCategoryRequest> updateCategoryRequestValidator;
 
         public CategoriesController(
             ICategoryService categoryService,
             ICategoryQuotationService categoryQuotationService,
             ICategoryUserService categoryUserService,
             IMapper mapper,
-            IValidator<InsertCategoryRequest> insertCategoryRequestValidator,
-            IValidator<UpdateCategoryRequest> updateCategoryRequestValidator
+            IModelValidator<InsertCategoryRequest> insertCategoryRequestValidator,
+            IModelValidator<UpdateCategoryRequest> updateCategoryRequestValidator
         )
         {
             this.categoryService = categoryService;
@@ -57,14 +57,9 @@ namespace WebApi.Controllers.Categories
 
         [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Insert([FromBody] InsertCategoryRequest request)
         {
-            var validationResult = insertCategoryRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ValidationException(validationResult.Errors));
-            }
+            insertCategoryRequestValidator.Check(request);
             var model = mapper.Map<InsertCategoryModel>(request);
             await categoryService.Insert(model);
             return Ok();
@@ -75,11 +70,7 @@ namespace WebApi.Controllers.Categories
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryRequest request)
         {
-            var validationResult = updateCategoryRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ValidationException(validationResult.Errors));
-            }
+            updateCategoryRequestValidator.Check(request);
             var model = mapper.Map<UpdateCategoryModel>(request);
             await categoryService.Update(id, model);
             return Ok();

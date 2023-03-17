@@ -2,6 +2,7 @@
 using Categories.Models;
 using CategoriesQuotations.Models;
 using Common.Exceptions;
+using Common.ModelValidator;
 using Context;
 using Context.Entities;
 using FluentValidation;
@@ -14,14 +15,14 @@ namespace CategoriesQuotations
     {
         private readonly IDbContextFactory<MainDbContext> contextFactory;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertCategoryQuotationModel> insertCategoryQuotationModelValidator;
-        private readonly IValidator<UpdateCategoryQuotationModel> updateCategoryQuotationModelValidator;
+        private readonly IModelValidator<InsertCategoryQuotationModel> insertCategoryQuotationModelValidator;
+        private readonly IModelValidator<UpdateCategoryQuotationModel> updateCategoryQuotationModelValidator;
 
         public CategoryQuotationService(
             IDbContextFactory<MainDbContext> contextFactory,
             IMapper mapper,
-            IValidator<InsertCategoryQuotationModel> insertCategoryQuotationModelValidator,
-            IValidator<UpdateCategoryQuotationModel> updateCategoryQuotationModelValidator
+            IModelValidator<InsertCategoryQuotationModel> insertCategoryQuotationModelValidator,
+            IModelValidator<UpdateCategoryQuotationModel> updateCategoryQuotationModelValidator
         )
         {
             this.contextFactory = contextFactory;
@@ -72,7 +73,7 @@ namespace CategoriesQuotations
 
         public async Task Insert(InsertCategoryQuotationModel model)
         {
-            await insertCategoryQuotationModelValidator.ValidateAndThrowAsync(model);
+            await insertCategoryQuotationModelValidator.CheckAsync(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var categoryQuotation = mapper.Map<CategoryQuotation>(model);
             await context.CategoriesQuotations.AddAsync(categoryQuotation);
@@ -81,7 +82,7 @@ namespace CategoriesQuotations
 
         public async Task Update(int id, UpdateCategoryQuotationModel model)
         {
-            await updateCategoryQuotationModelValidator.ValidateAndThrowAsync(model);
+            await updateCategoryQuotationModelValidator.CheckAsync(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var categoryQuotation = await context.CategoriesQuotations.FindAsync(id)
                 ?? throw new ServiceException($"CategoryQuotation with id {id} wasn't found");

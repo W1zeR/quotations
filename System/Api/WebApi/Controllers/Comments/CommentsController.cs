@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Comments;
 using WebApi.Controllers.Comments.Models;
 using Comments.Models;
+using Common.ModelValidator;
 
 namespace WebApi.Controllers.Comments
 {
@@ -14,14 +14,14 @@ namespace WebApi.Controllers.Comments
     {
         private readonly ICommentService commentService;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertCommentRequest> insertCommentRequestValidator;
-        private readonly IValidator<UpdateCommentRequest> updateCommentRequestValidator;
+        private readonly IModelValidator<InsertCommentRequest> insertCommentRequestValidator;
+        private readonly IModelValidator<UpdateCommentRequest> updateCommentRequestValidator;
 
         public CommentsController(
             ICommentService commentService,
             IMapper mapper,
-            IValidator<InsertCommentRequest> insertCommentRequestValidator,
-            IValidator<UpdateCommentRequest> updateCommentRequestValidator
+            IModelValidator<InsertCommentRequest> insertCommentRequestValidator,
+            IModelValidator<UpdateCommentRequest> updateCommentRequestValidator
         )
         {
             this.commentService = commentService;
@@ -51,11 +51,7 @@ namespace WebApi.Controllers.Comments
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Insert([FromBody] InsertCommentRequest request)
         {
-            var validationResult = insertCommentRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ValidationException(validationResult.Errors));
-            }
+            insertCommentRequestValidator.Check(request);
             var model = mapper.Map<InsertCommentModel>(request);
             await commentService.Insert(model);
             return Ok();
@@ -66,11 +62,7 @@ namespace WebApi.Controllers.Comments
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequest request)
         {
-            var validationResult = updateCommentRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ValidationException(validationResult.Errors));
-            }
+            updateCommentRequestValidator.Check(request);
             var model = mapper.Map<UpdateCommentModel>(request);
             await commentService.Update(id, model);
             return Ok();

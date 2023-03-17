@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Categories.Models;
 using Common.Exceptions;
+using Common.ModelValidator;
 using Context;
 using Context.Entities;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace Categories
@@ -12,14 +12,14 @@ namespace Categories
     {
         private readonly IDbContextFactory<MainDbContext> contextFactory;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertCategoryModel> insertCategoryModelValidator;
-        private readonly IValidator<UpdateCategoryModel> updateCategoryModelValidator;
+        private readonly IModelValidator<InsertCategoryModel> insertCategoryModelValidator;
+        private readonly IModelValidator<UpdateCategoryModel> updateCategoryModelValidator;
 
         public CategoryService(
             IDbContextFactory<MainDbContext> contextFactory,
             IMapper mapper,
-            IValidator<InsertCategoryModel> insertCategoryModelValidator,
-            IValidator<UpdateCategoryModel> updateCategoryModelValidator
+            IModelValidator<InsertCategoryModel> insertCategoryModelValidator,
+            IModelValidator<UpdateCategoryModel> updateCategoryModelValidator
         )
         {
             this.contextFactory = contextFactory;
@@ -49,7 +49,7 @@ namespace Categories
 
         public async Task Insert(InsertCategoryModel model)
         {
-            await insertCategoryModelValidator.ValidateAndThrowAsync(model);
+            await insertCategoryModelValidator.CheckAsync(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var category = mapper.Map<Category>(model);
             await context.Categories.AddAsync(category);
@@ -58,7 +58,7 @@ namespace Categories
 
         public async Task Update(int id, UpdateCategoryModel model)
         {
-            await updateCategoryModelValidator.ValidateAndThrowAsync(model);
+            await updateCategoryModelValidator.CheckAsync(model);
             using var context = await contextFactory.CreateDbContextAsync();
             var category = await context.Categories.FindAsync(id)
                 ?? throw new ServiceException($"Category with id {id} wasn't found");

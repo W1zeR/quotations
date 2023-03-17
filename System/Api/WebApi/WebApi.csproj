@@ -7,6 +7,8 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>WebApi.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Controllers\Users\Models\AutoMapper\" />
     <Folder Include="Controllers\Users\Models\FluentValidation\" />
-    <Folder Include="Middlewares\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +39,7 @@
     <ProjectReference Include="..\..\..\Service\Quotations\Quotations.csproj" />
     <ProjectReference Include="..\..\..\Service\Subscriptions\Subscriptions.csproj" />
     <ProjectReference Include="..\..\..\Service\Users\Users.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,6 +6,11 @@ using Quotations.Models.AutoMapper;
 using Subscriptions.Models.AutoMapper;
 using Users.Models.AutoMapper;
 using WebApi.Controllers.Categories.Models.AutoMapper;
+using WebApi.Controllers.CategoriesQuotations.Models.AutoMapper;
+using WebApi.Controllers.CategoriesUsers.Models.AutoMapper;
+using WebApi.Controllers.Comments.Models.AutoMapper;
+using WebApi.Controllers.Quotations.Models.AutoMapper;
+using WebApi.Controllers.Subscriptions.Models.AutoMapper;
 
 namespace WebApi.Configuration
 {
@@ -24,7 +29,13 @@ namespace WebApi.Configuration
                 typeof(UserModelProfile),
 
                 // Add AutoMapper to controllers
-                typeof(InsertCategoryRequestProfile));
+                typeof(InsertCategoryRequestProfile),
+                typeof(InsertCategoryQuotationRequestProfile),
+                typeof(InsertCategoryUserRequestProfile),
+                typeof(InsertCommentRequestProfile),
+                typeof(InsertQuotationRequestProfile),
+                typeof(InsertSubscriptionRequestProfile)
+            );
 
             return services;
         }

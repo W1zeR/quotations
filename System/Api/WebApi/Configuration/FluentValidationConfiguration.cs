@@ -2,6 +2,9 @@
 using Categories.Models.FluentValidation;
 using CategoriesQuotations.Models.FluentValidation;
 using WebApi.Controllers.Categories.Models.FluentValidation;
+using WebApi.Controllers.Comments.Models.FluentValidation;
+using WebApi.Controllers.Quotations.Models.FluentValidation;
+using Common.ModelValidator;
 
 namespace WebApi.Configuration
 {
@@ -15,6 +18,11 @@ namespace WebApi.Configuration
 
             // Add FluentValidation to controllers
             services.AddValidatorsFromAssemblyContaining<InsertCategoryRequestValidator>(ServiceLifetime.Singleton);
+            services.AddValidatorsFromAssemblyContaining<InsertCommentRequestValidator>(ServiceLifetime.Singleton);
+            services.AddValidatorsFromAssemblyContaining<InsertQuotationRequestValidator>(ServiceLifetime.Singleton);
+
+            // Add ModelValidator
+            services.AddAppModelValidator();
 
             return services;
         }

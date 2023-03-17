@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
-using Categories.Models;
-using Categories;
 using CategoriesQuotations;
-using CategoriesUsers;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Categories.Models;
 using WebApi.Controllers.Quotations.Models;
@@ -11,6 +7,7 @@ using Quotations;
 using Comments;
 using Quotations.Models;
 using WebApi.Controllers.Comments.Models;
+using Common.ModelValidator;
 
 namespace WebApi.Controllers.Quotations
 {
@@ -23,16 +20,16 @@ namespace WebApi.Controllers.Quotations
         private readonly ICategoryQuotationService categoryQuotationService;
         private readonly ICommentService commentService;
         private readonly IMapper mapper;
-        private readonly IValidator<InsertQuotationRequest> insertQuotationRequestValidator;
-        private readonly IValidator<UpdateQuotationRequest> updateQuotationRequestValidator;
+        private readonly IModelValidator<InsertQuotationRequest> insertQuotationRequestValidator;
+        private readonly IModelValidator<UpdateQuotationRequest> updateQuotationRequestValidator;
 
         public QuotationsController(
             IQuotationService quotationService,
             ICategoryQuotationService categoryQuotationService,
             ICommentService commentService,
             IMapper mapper,
-            IValidator<InsertQuotationRequest> insertQuotationRequestValidator,
-            IValidator<UpdateQuotationRequest> updateQuotationRequestValidator
+            IModelValidator<InsertQuotationRequest> insertQuotationRequestValidator,
+            IModelValidator<UpdateQuotationRequest> updateQuotationRequestValidator
         )
         {
             this.quotationService = quotationService;
@@ -64,11 +61,7 @@ namespace WebApi.Controllers.Quotations
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Insert([FromBody] InsertQuotationRequest request)
         {
-            var validationResult = insertQuotationRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ValidationException(validationResult.Errors));
-            }
+            insertQuotationRequestValidator.Check(request);
             var model = mapper.Map<InsertQuotationModel>(request);
             await quotationService.Insert(model);
             return Ok();
@@ -79,11 +72,7 @@ namespace WebApi.Controllers.Quotations
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateQuotationRequest request)
         {
-            var validationResult = updateQuotationRequestValidator.Validate(request);
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(new ValidationException(validationResult.Errors));
-            }
+            updateQuotationRequestValidator.Check(request);
             var model = mapper.Map<UpdateQuotationModel>(request);
             await quotationService.Update(id, model);
             return Ok();

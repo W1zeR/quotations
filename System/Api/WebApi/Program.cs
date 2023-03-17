@@ -13,7 +13,7 @@ services.AddControllers();
 services.AddHealthChecks();
 services.AddHttpContextAccessor();
 services.AddEndpointsApiExplorer();
-services.AddSwaggerGen();
+services.AddAppSwagger();
 services.AddAppAutoMapper();
 services.AddAppFluentValidation();
 services.AddAppServices();
@@ -22,6 +22,7 @@ var app = builder.Build();
 
 app.UseAppSwagger();
 app.UseAuthorization();
+app.UseAppMiddlewares();
 app.MapControllers();
 app.MapHealthChecks("/health");
 

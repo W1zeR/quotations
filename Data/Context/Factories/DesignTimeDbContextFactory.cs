@@ -9,7 +9,7 @@ namespace Context.Factories
         public MainDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Context.json")
+                .AddJsonFile("appsettings.json")
                 .Build();
 
             DbContextOptions<MainDbContext> options = new DbContextOptionsBuilder<MainDbContext>()
