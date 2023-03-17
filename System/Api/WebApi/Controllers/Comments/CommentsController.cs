@@ -4,9 +4,12 @@ using Comments;
 using WebApi.Controllers.Comments.Models;
 using Comments.Models;
 using Common.ModelValidator;
+using Common.Responses.ErrorResponse;
 
 namespace WebApi.Controllers.Comments
 {
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 500)]
     [Produces("application/json")]
     [Route("api/comments")]
     [ApiController]

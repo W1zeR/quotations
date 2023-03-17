@@ -4,12 +4,15 @@ using Categories.Models;
 using CategoriesQuotations;
 using CategoriesUsers;
 using Common.ModelValidator;
+using Common.Responses.ErrorResponse;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.Categories.Models;
 using WebApi.Controllers.Quotations.Models;
 
 namespace WebApi.Controllers.Categories
 {
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 500)]
     [Produces("application/json")]
     [Route("api/categories")]
     [ApiController]

@@ -8,9 +8,12 @@ using Comments;
 using Quotations.Models;
 using WebApi.Controllers.Comments.Models;
 using Common.ModelValidator;
+using Common.Responses.ErrorResponse;
 
 namespace WebApi.Controllers.Quotations
 {
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 500)]
     [Produces("application/json")]
     [Route("api/quotations")]
     [ApiController]

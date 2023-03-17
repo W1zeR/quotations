@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Subscriptions;
 using WebApi.Controllers.Subscriptions.Models;
 using Subscriptions.Models;
+using Common.Responses.ErrorResponse;
 
 namespace WebApi.Controllers.Subscriptions
 {
+    [ProducesResponseType(typeof(ErrorResponse), 500)]
     [Produces("application/json")]
     [Route("api/subscriptions")]
     [ApiController]

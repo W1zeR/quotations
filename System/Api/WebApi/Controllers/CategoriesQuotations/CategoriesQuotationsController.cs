@@ -3,9 +3,12 @@ using CategoriesQuotations;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers.CategoriesQuotations.Models;
 using CategoriesQuotations.Models;
+using Common.Responses.ErrorResponse;
 
 namespace WebApi.Controllers.CategoriesQuotations
 {
+    [ProducesResponseType(typeof(ErrorResponse), 400)]
+    [ProducesResponseType(typeof(ErrorResponse), 500)]
     [Produces("application/json")]
     [Route("api/categories-quotations")]
     [ApiController]

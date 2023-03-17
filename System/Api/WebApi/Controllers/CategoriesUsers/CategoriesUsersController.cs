@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using CategoriesUsers;
 using WebApi.Controllers.CategoriesUsers.Models;
 using CategoriesUsers.Models;
+using Common.Responses.ErrorResponse;
 
 namespace WebApi.Controllers.CategoriesUsers
 {
+    [ProducesResponseType(typeof(ErrorResponse), 500)]
     [Produces("application/json")]
     [Route("api/categories-users")]
     [ApiController]
