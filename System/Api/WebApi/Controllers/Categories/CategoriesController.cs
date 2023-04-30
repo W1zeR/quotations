@@ -65,18 +65,17 @@ namespace WebApi.Controllers.Categories
             insertCategoryRequestValidator.Check(request);
             var model = mapper.Map<InsertCategoryModel>(request);
             await categoryService.Insert(model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCategoryRequest request)
         {
             updateCategoryRequestValidator.Check(request);
             var model = mapper.Map<UpdateCategoryModel>(request);
             await categoryService.Update(id, model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpDelete("{id}")]
@@ -84,7 +83,7 @@ namespace WebApi.Controllers.Categories
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await categoryService.Delete(id);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpGet("{id}/quotations")]

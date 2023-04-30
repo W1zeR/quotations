@@ -48,7 +48,7 @@ namespace WebApi.Controllers.Subscriptions
         {
             var model = mapper.Map<InsertSubscriptionModel>(request);
             await subscriptionService.Insert(model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpPut("{id}")]
@@ -57,7 +57,7 @@ namespace WebApi.Controllers.Subscriptions
         {
             var model = mapper.Map<UpdateSubscriptionModel>(request);
             await subscriptionService.Update(id, model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpDelete("{id}")]
@@ -65,7 +65,7 @@ namespace WebApi.Controllers.Subscriptions
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await subscriptionService.Delete(id);
-            return Ok();
+            return Ok("Ok");
         }
     }
 }

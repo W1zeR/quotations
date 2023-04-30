@@ -1,8 +1,14 @@
 version: '3.4'
 
 services:
+
+  postgresql:
+    image: postgres:15.2
+
   webapi:
     image: ${DOCKER_REGISTRY-}webapi
     build:
       context: .
-      dockerfile: System/Api/WebApi/Dockerfile
+      dockerfile: System\Api\WebApi\Dockerfile
+    depends_on:
+      - postgresql

@@ -36,8 +36,9 @@ namespace Quotations
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var quotation = await context.Quotations.FindAsync(id);
-            return quotation == null ? throw new ServiceException($"Quotation with id {id} wasn't found") :
-                mapper.Map<QuotationModel>(quotation);
+            return quotation == null
+                ? throw new ServiceException($"Quotation with id {id} wasn't found")
+                : mapper.Map<QuotationModel>(quotation);
         }
 
         public async Task<IEnumerable<QuotationModel>> GetByUserId(Guid userId)

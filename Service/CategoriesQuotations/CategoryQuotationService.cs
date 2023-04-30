@@ -46,9 +46,9 @@ namespace CategoriesQuotations
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var categoryQuotation = await context.CategoriesQuotations.FindAsync(id);
-            return categoryQuotation == null ? 
-                throw new ServiceException($"CategoryQuotation with id {id} wasn't found") :
-                mapper.Map<CategoryQuotationModel>(categoryQuotation);
+            return categoryQuotation == null
+                ? throw new ServiceException($"CategoryQuotation with id {id} wasn't found")
+                : mapper.Map<CategoryQuotationModel>(categoryQuotation);
         }
 
         public async Task<IEnumerable<CategoryModel>> GetCategoriesByQuotationId(int quotationId)

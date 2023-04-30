@@ -6,7 +6,7 @@ namespace Users
     {
         public static IServiceCollection AddUserService(this IServiceCollection services)
         {
-            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

@@ -43,8 +43,9 @@ namespace Categories
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var category = await context.Categories.FindAsync(id);
-            return category == null ? throw new ServiceException($"Category with id {id} wasn't found") :
-                mapper.Map<CategoryModel>(category);
+            return category == null
+                ? throw new ServiceException($"Category with id {id} wasn't found")
+                : mapper.Map<CategoryModel>(category);
         }
 
         public async Task Insert(InsertCategoryModel model)

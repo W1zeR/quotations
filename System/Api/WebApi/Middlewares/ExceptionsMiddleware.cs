@@ -22,9 +22,9 @@ namespace WebApi.Middlewares
             {
                 await next.Invoke(context);
             }
-            catch (ValidationException se)
+            catch (ValidationException ve)
             {
-                response = se.ToErrorResponse();
+                response = ve.ToErrorResponse();
             }
             catch (ServiceException se)
             {

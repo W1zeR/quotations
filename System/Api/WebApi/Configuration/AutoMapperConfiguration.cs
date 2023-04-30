@@ -11,6 +11,7 @@ using WebApi.Controllers.CategoriesUsers.Models.AutoMapper;
 using WebApi.Controllers.Comments.Models.AutoMapper;
 using WebApi.Controllers.Quotations.Models.AutoMapper;
 using WebApi.Controllers.Subscriptions.Models.AutoMapper;
+using WebApi.Controllers.Users.Models.AutoMapper;
 
 namespace WebApi.Configuration
 {
@@ -34,7 +35,8 @@ namespace WebApi.Configuration
                 typeof(InsertCategoryUserRequestProfile),
                 typeof(InsertCommentRequestProfile),
                 typeof(InsertQuotationRequestProfile),
-                typeof(InsertSubscriptionRequestProfile)
+                typeof(InsertSubscriptionRequestProfile),
+                typeof(RegisterUserRequestProfile)
             );
 
             return services;

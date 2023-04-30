@@ -48,7 +48,7 @@ namespace WebApi.Controllers.CategoriesUsers
         {
             var model = mapper.Map<InsertCategoryUserModel>(request);
             await categoryUserService.Insert(model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpPut("{id}")]
@@ -57,7 +57,7 @@ namespace WebApi.Controllers.CategoriesUsers
         {
             var model = mapper.Map<UpdateCategoryUserModel>(request);
             await categoryUserService.Update(id, model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpDelete("{id}")]
@@ -65,7 +65,7 @@ namespace WebApi.Controllers.CategoriesUsers
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await categoryUserService.Delete(id);
-            return Ok();
+            return Ok("Ok");
         }
     }
 }

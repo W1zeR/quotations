@@ -36,8 +36,9 @@ namespace Comments
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var comment = await context.Comments.FindAsync(id);
-            return comment == null ? throw new ServiceException($"Comment with id {id} wasn't found") :
-                mapper.Map<CommentModel>(comment);
+            return comment == null
+                ? throw new ServiceException($"Comment with id {id} wasn't found") 
+                : mapper.Map<CommentModel>(comment);
         }
 
         public async Task<IEnumerable<CommentModel>> GetByQuotationId(int quotationId)

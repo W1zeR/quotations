@@ -39,9 +39,9 @@ namespace CategoriesUsers
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var categoryUser = await context.CategoriesUsers.FindAsync(id);
-            return categoryUser == null ?
-                throw new ServiceException($"CategoryUser with id {id} wasn't found") :
-                mapper.Map<CategoryUserModel>(categoryUser);
+            return categoryUser == null
+                ? throw new ServiceException($"CategoryUser with id {id} wasn't found")
+                : mapper.Map<CategoryUserModel>(categoryUser);
         }
 
         public async Task<IEnumerable<CategoryModel>> GetCategoriesByUserId(Guid userId)

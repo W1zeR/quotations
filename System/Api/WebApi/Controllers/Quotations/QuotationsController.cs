@@ -61,24 +61,22 @@ namespace WebApi.Controllers.Quotations
 
         [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Insert([FromBody] InsertQuotationRequest request)
         {
             insertQuotationRequestValidator.Check(request);
             var model = mapper.Map<InsertQuotationModel>(request);
             await quotationService.Insert(model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateQuotationRequest request)
         {
             updateQuotationRequestValidator.Check(request);
             var model = mapper.Map<UpdateQuotationModel>(request);
             await quotationService.Update(id, model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpDelete("{id}")]
@@ -86,7 +84,7 @@ namespace WebApi.Controllers.Quotations
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await quotationService.Delete(id);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpGet("{id}/categories")]

@@ -51,24 +51,22 @@ namespace WebApi.Controllers.Comments
 
         [HttpPost("")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Insert([FromBody] InsertCommentRequest request)
         {
             insertCommentRequestValidator.Check(request);
             var model = mapper.Map<InsertCommentModel>(request);
             await commentService.Insert(model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequest request)
         {
             updateCommentRequestValidator.Check(request);
             var model = mapper.Map<UpdateCommentModel>(request);
             await commentService.Update(id, model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpDelete("{id}")]
@@ -76,7 +74,7 @@ namespace WebApi.Controllers.Comments
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await commentService.Delete(id);
-            return Ok();
+            return Ok("Ok");
         }
     }
 }

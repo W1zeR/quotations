@@ -37,9 +37,9 @@ namespace Subscriptions
         {
             using var context = await contextFactory.CreateDbContextAsync();
             var subscription = await context.Subscriptions.FindAsync(id);
-            return subscription == null ?
-                throw new ServiceException($"Subscription with id {id} wasn't found") :
-                mapper.Map<SubscriptionModel>(subscription);
+            return subscription == null
+                ? throw new ServiceException($"Subscription with id {id} wasn't found")
+                : mapper.Map<SubscriptionModel>(subscription);
         }
 
         public async Task<IEnumerable<UserModel>> GetFollowersByUserId(Guid userId)

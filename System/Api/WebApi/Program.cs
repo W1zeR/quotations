@@ -12,11 +12,11 @@ services.AddAppDbContext(configuration);
 services.AddControllers();
 services.AddHealthChecks();
 services.AddHttpContextAccessor();
-services.AddEndpointsApiExplorer();
 services.AddAppSwagger();
 services.AddAppAutoMapper();
 services.AddAppFluentValidation();
 services.AddAppServices();
+services.AddAppIdentity();
 
 var app = builder.Build();
 

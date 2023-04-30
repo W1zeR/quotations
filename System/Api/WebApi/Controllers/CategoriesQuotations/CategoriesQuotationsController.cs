@@ -49,7 +49,7 @@ namespace WebApi.Controllers.CategoriesQuotations
         {
             var model = mapper.Map<InsertCategoryQuotationModel>(request);
             await categoryQuotationService.Insert(model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpPut("{id}")]
@@ -58,7 +58,7 @@ namespace WebApi.Controllers.CategoriesQuotations
         {
             var model = mapper.Map<UpdateCategoryQuotationModel>(request);
             await categoryQuotationService.Update(id, model);
-            return Ok();
+            return Ok("Ok");
         }
 
         [HttpDelete("{id}")]
@@ -66,7 +66,7 @@ namespace WebApi.Controllers.CategoriesQuotations
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await categoryQuotationService.Delete(id);
-            return Ok();
+            return Ok("Ok");
         }
     }
 }
