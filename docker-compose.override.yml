@@ -9,6 +9,10 @@ services:
       - POSTGRES_PASSWORD=meow
     ports:
       - "5430:5430"
+    command: 
+      - "postgres"
+      - "-c"
+      - "port=5430"
     networks:
       - shared_quotations_net
     volumes:      
